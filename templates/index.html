@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bulk Email Verifier</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📧 Bulk Email Verifier</h1>
+
+    <p>Upload a CSV file containing email addresses.</p>
+
+    <div id="loading" style="display:none;">
+        <h3>⏳ Verifying Emails...</h3>
+    </div>
+
+    <form action="/upload"
+          method="POST"
+          enctype="multipart/form-data"
+          onsubmit="document.getElementById('loading').style.display='block';">
+
+        <input type="file"
+               name="file"
+               accept=".csv"
+               required>
+
+        <br><br>
+
+        <button type="submit">
+            Verify Emails
+        </button>
+
+    </form>
+
+    {% if total %}
+
+    <hr>
+
+    <h2>Verification Summary</h2>
+
+    <div class="stats">
+
+        <div class="card">
+            <h3>Total</h3>
+            <p>{{ total }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Valid</h3>
+            <p>{{ valid }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Bounce</h3>
+            <p>{{ bounce }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Unknown</h3>
+            <p>{{ unknown }}</p>
+        </div>
+
+    </div>
+
+    <br>
+
+    <a href="/download">
+        <button>
+            Download Results CSV
+        </button>
+    </a>
+
+    <br><br>
+
+    <table>
+
+        <thead>
+
+        <tr>
+            <th>Email Address</th>
+            <th>Status</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for row in results %}
+
+        <tr>
+
+            <td>{{ row.email }}</td>
+
+            <td>
+
+                {% if row.status == "Valid" %}
+
+                    <span class="valid">
+                        {{ row.status }}
+                    </span>
+
+                {% elif row.status == "Bounce" %}
+
+                    <span class="bounce">
+                        {{ row.status }}
+                    </span>
+
+                {% else %}
+
+                    <span class="unknown">
+                        {{ row.status }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

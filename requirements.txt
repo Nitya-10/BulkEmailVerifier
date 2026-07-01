@@ -1,0 +1,5 @@
+Flask
+pandas
+dnspython
+email-validator
+aiosmtplib
