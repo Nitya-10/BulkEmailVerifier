@@ -3,3 +3,4 @@ pandas
 dnspython
 email-validator
 aiosmtplib
+gunicorn
